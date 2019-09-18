@@ -22,7 +22,7 @@ function Form (props) {
             <label htmlFor="name">Name</label>
             <input name="name" type="text" placeholder="name..." value={member.name} onChange={handleChange}/>
             <label htmlFor="role">Role</label>
-            <input role="role" type="text" palceholder="role..." value={member.role} onChange={handleChange}/>
+            <input role="role" type="text" placeholder="role..." value={member.role} onChange={handleChange}/>
             <label htmlFor="email">Email</label>
             <input email="email" type="text" placeholder="someone@example.com" value={member.email} onChange={handleChange}/>
         </form>
