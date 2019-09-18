@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import TeamMembers from './TeamMembers';
 
 function Form (props) {
     const [member, setMember] = useState ({
