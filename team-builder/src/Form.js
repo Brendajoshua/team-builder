@@ -1,32 +1,62 @@
 import React, {useState, useEffect} from 'react';
-import TeamMembers from './TeamMembers';
+//import TeamMembers from './TeamMembers';
 
-function Form (props) {
-    const [member, setMember] = useState ({
-        name: '',
-        email: '',
-        role: '',
-    });
-
-    const handleChange = event => {
-        setMember({...member, [event.target.name]: event.target.value});
-    }
-
+const Form = props => {
+    const [member, setMember] = useState({ name: "", email: "", role: "" });
+  
+    useEffect(() => {
+      setMember(props.memberToEdit || { name: "", email: "", role: "" });
+    }, [props.memberToEdit]);
+  
+    const changeHandler = event => {
+      console.log(event.target.value);
+      setMember({ ...member, [event.target.name]: event.target.value });
+    };
+  
     const submitForm = event => {
-        event.preventDefault();
-        
-    }
-
+      event.preventDefault();
+      if (props.memberToEdit) {
+        props.editMember(member);
+      } else {
+        const newTeamMember = {
+          ...member,
+          key: Date.now()
+        };
+        props.addNewTeamMember(newTeamMember);
+        setMember({ name: "", email: "", role: "" });
+      }
+    };
+  
     return (
-        <form onSubmit={submitForm}>
-            <label htmlFor="name">Name</label>
-            <input name="name" type="text" placeholder="name..." value={member.name} onChange={handleChange}/>
-            <label htmlFor="role">Role</label>
-            <input role="role" type="text" placeholder="role..." value={member.role} onChange={handleChange}/>
-            <label htmlFor="email">Email</label>
-            <input email="email" type="text" placeholder="someone@example.com" value={member.email} onChange={handleChange}/>
-        </form>
-    )
-}
-
+      <form onSubmit={submitForm}>
+        <label htmlFor="name">Full Name:</label>
+        <input
+          value={member.name}
+          onChange={changeHandler}
+          type="text"
+          name="name"
+          placeholder="fullname"
+        />
+        <label htmlFor="email">Email:</label>
+        <input
+          value={member.email}
+          onChange={changeHandler}
+          type="text"
+          name="email"
+          placeholder="user@example.com"
+        />
+        <label htmlFor="role">Role:</label>
+        <input
+          value={member.role}
+          onChange={changeHandler}
+          type="text"
+          name="role"
+          placeholder="Member Role"
+        />
+        <button type="submit">
+          {props.memberToEdit ? "Save Changes" : "Add +"}
+        </button>
+      </form>
+    );
+  };
 export default Form;

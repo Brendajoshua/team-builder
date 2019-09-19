@@ -3,39 +3,29 @@ import React, {useState} from 'react';
 import './App.css';
 import Form from './Form';
 import TeamMembers from './TeamMembers';
+import uuid from 'uuid';
+
+// const initialMembersList = [
+//   {id: uuid(), name: 'brenda' role: 'developer' email: brenda@lambda.com},
+// ];
 
 function App() {
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [memberToEdit, setMemberToEdit] = useState();
 
-  const [teamList, setTeamList] = useState([]);
-  const [memberToEdit, setMemberToEdit] = useState(null);
+  const addNewTeamMember = member => {
+    setTeamMembers([...teamMembers, member]);
+  };
 
-  const addTeamMember = member => {
-    setTeamList([...teamList, member]);
+  const editMember = editedMember => {
+    const newTeamMembers = teamMembers.map(member => member.key === editedMember.key ? editedMember : member);
+    setTeamMembers(newTeamMembers);
+    setMemberToEdit();
   }
-
-  const changeMemberToEdit = member => {
-    setMemberToEdit(member);
-  }
-
-  const editTeamMember = editedMember => {
-    const editedList = teamList.map(member => {
-      if (editedMember.key === member.key) member = {...editedMember}
-      return member;
-    })
-    setTeamList(editedList);
-    setMemberToEdit(null);
-  }
-
-  const deleteMember = memberToDelete => {
-    const editedList = teamList.filter(member => member !== memberToDelete);
-    setTeamList(editedList);
-  }
-
   return (
     <div className="App">
-     <h1>Team Builder</h1>
-     <Form addTeamMember={addTeamMember} memberToEdit={memberToEdit} editTeamMember={editTeamMember}/>
-     <TeamMembers teamList={teamList} changeMemberToEdit={changeMemberToEdit} deleteMember={deleteMember}/>
+      <Form addNewTeamMember={addNewTeamMember} editMember={editMember} memberToEdit={memberToEdit} />
+      {teamMembers.map(member => <TeamMembers setMemberToEdit={setMemberToEdit} member={member} />)}
     </div>
   );
 }
